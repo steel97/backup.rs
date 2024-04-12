@@ -1,0 +1,45 @@
+{
+    "Storages": [
+        {
+            "Type": "s3",
+            "Endpoint": "https://hb.bizmrg.com",
+            "AccessKey": "",
+            "SecretKey": "",
+            "Region": "ru-msk",
+            "Bucket": "",
+            "KeyPrefix": "backups/project1/"
+        }
+    ],
+    "Targets": [
+        {
+            "Name": "MyTarget {year}-{month}-{day}_{hour}.{minute}.{second}.zip",
+            "Packer": {
+                "Password": ""
+            },
+            "Backup": {
+                "Directories": [
+                    {
+                        "Output": "mytarget-files",
+                        "Source": "/home/mytarget/"
+                    }
+                ],
+                "Commands": [
+                    {
+                        "Output": "somedb.sql",
+                        "Command": "/usr/bin/pg_dump",
+                        "Args": [
+                            "--host=localhost",
+                            "--port=5432",
+                            "--username=\"mypguser\"",
+                            "--dbname=\"somedb\"",
+                            "--file=\"%BKP_CMD_TMPFILE%\""
+                        ],
+                        "Env": {
+                            "PGPASSWORD": "pwd"
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}

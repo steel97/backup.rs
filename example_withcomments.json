@@ -1,0 +1,62 @@
+{
+    // array of storages where backuper upload resulting archive(s)
+    "Storages": [
+        // only s3 compatible storages supported for now
+        {
+            "Type": "s3",
+            // endpoint url
+            "Endpoint": "https://hb.bizmrg.com",
+            // taken from storage provider
+            "AccessKey": "",
+            "SecretKey": "",
+            // service region
+            "Region": "ru-msk",
+            // bucket name
+            "Bucket": "",
+            // prefix added to uploaded item name
+            "KeyPrefix": "backups/project1/"
+        }
+    ],
+    // list of targets which will be packed and uploaded to all storages
+    "Targets": [
+        {
+            // archive name (also key postfix)
+            "Name": "MyTarget {year}-{month}-{day}_{hour}.{minute}.{second}.zip",
+            "Packer": {
+                // archive can be additionally encrypted with password, leave empty if encryption not required
+                "Password": ""
+            },
+            "Backup": {
+                // this directories will be packed to backup
+                "Directories": [
+                    {
+                        // directory name inside archive
+                        "Output": "mytarget-files",
+                        // directory path
+                        "Source": "/home/mytarget/"
+                    }
+                ],
+                "Commands": [
+                    {
+                        // %BKP_CMD_TMPFILE% will be put inside archive with this name, for example command result may be written as echo "test" > %BKP_CMD_TMPFILE%
+                        "Output": "somedb.sql",
+                        // command to execute
+                        "Command": "/usr/bin/pg_dump",
+                        // args of command
+                        "Args": [
+                            "--host=localhost",
+                            "--port=5432",
+                            "--username=\"mypguser\"",
+                            "--dbname=\"somedb\"",
+                            "--file=\"%BKP_CMD_TMPFILE%\""
+                        ],
+                        // env variables key value
+                        "Env": {
+                            "PGPASSWORD": "pwd"
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}
