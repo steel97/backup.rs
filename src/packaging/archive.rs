@@ -16,10 +16,10 @@ impl Archive {
         let file = File::create(archive_path)?;
         let zip = ZipWriter::new(file);
         let options = if password.is_empty() {
-            FileOptions::default().compression_method(zip::CompressionMethod::Stored)
+            FileOptions::default().compression_method(zip::CompressionMethod::Bzip2)
         } else {
             FileOptions::default()
-                .compression_method(zip::CompressionMethod::Stored)
+                .compression_method(zip::CompressionMethod::Bzip2)
                 .with_deprecated_encryption(password.as_bytes())
         };
         let buffer = Vec::new();

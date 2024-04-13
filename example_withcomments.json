@@ -24,6 +24,7 @@
             "Name": "MyTarget {year}-{month}-{day}_{hour}.{minute}.{second}.zip",
             "Packer": {
                 // archive can be additionally encrypted with password, leave empty if encryption not required
+                // WARN: encryption method is not safe for now, so don't rely to much on this
                 "Password": ""
             },
             "Backup": {
@@ -46,9 +47,9 @@
                         "Args": [
                             "--host=localhost",
                             "--port=5432",
-                            "--username=\"mypguser\"",
-                            "--dbname=\"somedb\"",
-                            "--file=\"%BKP_CMD_TMPFILE%\""
+                            "--username=mypguser",
+                            "--dbname=somedb",
+                            "--file=%BKP_CMD_TMPFILE%"
                         ],
                         // env variables key value
                         "Env": {

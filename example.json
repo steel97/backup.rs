@@ -30,9 +30,9 @@
                         "Args": [
                             "--host=localhost",
                             "--port=5432",
-                            "--username=\"mypguser\"",
-                            "--dbname=\"somedb\"",
-                            "--file=\"%BKP_CMD_TMPFILE%\""
+                            "--username=mypguser",
+                            "--dbname=somedb",
+                            "--file=%BKP_CMD_TMPFILE%"
                         ],
                         "Env": {
                             "PGPASSWORD": "pwd"
