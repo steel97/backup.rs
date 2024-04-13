@@ -22,5 +22,5 @@ server requirements:
 
 download latest release (linux):
 ```
-wget https://github.com/steel97/backup.rs/releases/download/v1.0.0/backup-linux-x86_64-glibc.zip -O backup-tool.zip && unzip backup-tool.zip && chmod +x ./backup
+wget https://github.com/steel97/backup.rs/releases/latest/download/backup-linux-x86_64-glibc.zip -O backup-tool.zip && unzip backup-tool.zip && chmod +x ./backup
 ```
