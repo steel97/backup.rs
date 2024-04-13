@@ -186,6 +186,8 @@ async fn main() -> Result<()> {
                 .clone()
                 .with_context(|| format!("No bucket specified!"))?;
 
+            println!("Uploading {}", composite_key);
+
             'upload_object: loop {
                 let res = match upload_object(
                     &client,
