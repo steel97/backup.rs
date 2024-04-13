@@ -5,7 +5,7 @@ use aws_sdk_s3::{
     primitives::ByteStream,
     Client,
 };
-use backup::packaging::archive::Archive;
+use backup::{core::constants::VERSION, packaging::archive::Archive};
 use chrono::{Datelike, Timelike};
 use rand::{distributions::Alphanumeric, Rng};
 use std::{
@@ -19,6 +19,7 @@ use std::{
 
 #[::tokio::main]
 async fn main() -> Result<()> {
+    println!("backup.rs v{}", VERSION);
     // load backup configuration
     let args: Vec<String> = env::args().collect();
     if args.len() < 2 {
