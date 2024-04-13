@@ -14,10 +14,9 @@ build:
 cargo build --release
 ```
 
-server requirements:
+requirements:
 ```
-+ debian based OS
-+ pg_dump/mysqldump for databases
++ pg_dump/mysqldump for databases (optional)
 ```
 
 download latest release (linux):
