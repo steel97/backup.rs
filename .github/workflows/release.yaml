@@ -1,0 +1,77 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag name (without "v" prefix, ex. 1.0.0)'
+        default: '1.0.0'
+      draft:
+        description: 'Should new release be a draft?'
+        type: boolean
+        required: true
+        default: true
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yaml
+    secrets: inherit
+
+  create_release:
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      contents: write
+    steps:
+      # 1) artifact (backup win-x86_64)
+      - uses: actions/download-artifact@v4
+        with:
+          name: backup win-x86_64 (msvc)
+          path: './backup win-x86_64 (msvc)'
+      - run: |
+          rm -rf 'backup-win-x86_64.zip'
+          zip -j -r 'backup-win-x86_64.zip' './backup win-x86_64 (msvc)'
+      # 2) artifact (backup macos-aarch64)
+      - uses: actions/download-artifact@v4
+        with:
+          name: backup macos-aarch64
+          path: './backup.app'
+      - run: |
+          rm -rf 'backup-macos-aarch64.zip'
+          zip -j -r 'backup-macos-aarch64.zip' './backup.app'
+      # 3) artifact (backup linux-x86_64)
+      - uses: actions/download-artifact@v4
+        with:
+          name: backup linux-x86_64 (glibc)
+          path: './backup linux-x86_64 glibc'
+      - run: |
+          rm -rf 'backup-linux-x86_64-glibc.zip'
+          zip -j -r 'backup-linux-x86_64-glibc.zip' './backup linux-x86_64 glibc'
+      # 4) artifact (backup linux-aarch64)
+      - uses: actions/download-artifact@v4
+        with:
+          name: backup linux-aarch64 (glibc)
+          path: './backup linux-aarch64 glibc'
+      - run: |
+          rm -rf 'backup-linux-aarch64-glibc.zip'
+          zip -j -r 'backup-linux-aarch64-glibc.zip' './backup linux-aarch64 glibc'
+      # 5) artifact (backup linux-riscv64)
+      - uses: actions/download-artifact@v4
+        with:
+          name: backup linux-riscv64 (glibc)
+          path: './backup linux-riscv64 glibc'
+      - run: |
+          rm -rf 'backup-linux-riscv64-glibc.zip'
+          zip -j -r 'backup-linux-riscv64-glibc.zip' './backup linux-riscv64 glibc'
+      # upload release
+      - uses: ncipollo/release-action@v1
+        with:
+          commit: 'master'
+          tag: 'v${{ inputs.tag }}'
+          allowUpdates: true
+          artifactErrorsFailBuild: true
+          generateReleaseNotes: true
+          draft: '${{ inputs.draft }}'
+          name: 'backup.rs ${{ inputs.tag }}'
+          removeArtifacts: true
+          artifacts: '*.zip'
